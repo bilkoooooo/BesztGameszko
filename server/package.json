@@ -4,7 +4,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon server/controllers/server.js localhost 3000"
+    "server": "node server/controllers/server.js localhost 3000"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +12,8 @@
   "dependencies": {
     "express": "^4.21.1",
     "express-ws": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
