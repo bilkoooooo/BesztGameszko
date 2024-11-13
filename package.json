@@ -1,0 +1,13 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "server": "cd ./server && npm i && nodemon server/controllers/server.js localhost 3000",
+	"build": "cd ./client && npm i && npx vite build"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
