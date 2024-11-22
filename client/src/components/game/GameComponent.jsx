@@ -6,9 +6,10 @@ const GameComponent = () => {
   const {game} = useContext(GameContext);
 
   return (
-    <>
+    <div className="flex w-full h-full justify-center items-center relative">
+      {!game && <div className="loader"/>}
       {game && <GameBoardComponent/>}
-    </>
+    </div>
   )
 }
 

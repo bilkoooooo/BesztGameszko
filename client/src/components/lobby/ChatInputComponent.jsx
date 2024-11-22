@@ -1,28 +1,17 @@
-import PlayerInputComponent from "@ui/PlayerInputComponent";
-import {User} from "lucide-react";
+import Textarea02 from "@ui/textareas/textarea-02";
 
 const ChatInputComponent = ({player, webSocket}) => {
   let msg = '';
   const type = (event) => {
     msg = event.target.value;
-    if (event.key === "Enter" && msg) {
+    if (event.key === "Enter" && msg.trim()) {
       webSocket?.send(JSON.stringify({player, type: 'chat', text: msg}));
       event.target.value = '';
+      event.preventDefault();
     }
   }
-  return <div className="bg-white px-4 pb-4 pt-5 rounded flex-1">
-    {PlayerInputComponent({
-      inputType: 'text',
-      inputName: 'playerChat',
-      inputLabel: 'Mondj valamit..',
-      inputPlaceholder: 'Mondj valamit..',
-      InputIcon: player.icon ?? User,
-      inputValue: '',
-      inputStyle: {style: {outline: 0, color: player.color ?? '#000000'}},
-      dispatch: () => {},
-      player,
-      other: {onKeyDown: (event) => type(event)}
-    })}
+  return <div className="bg-white px-4 pb-4 pt-5 rounded flex-1 basis-1/5">
+    <Textarea02 onInput={(e) => type(e)}/>
   </div>
 }
 

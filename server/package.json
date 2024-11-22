@@ -4,7 +4,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "server": "node server/controllers/server.js localhost 3000"
+    "server": "node ./app.js.js localhost 3000",
+    "dev-server": "nodemon ./app.js localhost 3000"
   },
   "author": "",
   "license": "ISC",
