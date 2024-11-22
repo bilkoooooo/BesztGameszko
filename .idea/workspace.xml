@@ -4,24 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="62dd0492-89be-4bf6-bc02-4e961293eb8d" name="Changes" comment="Server init">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes/shelved.patch" beforeDir="false" />
+    <list default="true" id="62dd0492-89be-4bf6-bc02-4e961293eb8d" name="Changes" comment="chat &amp; games">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/styles/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/styles/App.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/game/GameBoardComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/game/GameBoardComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/game/GameComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/game/GameComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/lobby/ChatComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/lobby/ChatComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/lobby/ChatInputComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/lobby/ChatInputComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/lobby/JoinModalComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/lobby/JoinModalComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ui/PlayerInputComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ui/PlayerInputComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/services/PlayerProvider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/PlayerProvider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/services/WebSocketManager.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/WebSocketManager.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/Game.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/Game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/server/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +161,7 @@
       <workItem from="1732023299608" duration="1845000" />
       <workItem from="1732086477109" duration="499000" />
       <workItem from="1732198711503" duration="7035000" />
-      <workItem from="1732265665324" duration="8006000" />
+      <workItem from="1732265665324" duration="11637000" />
     </task>
     <task id="LOCAL-00001" summary="Client init">
       <option name="closed" value="true" />
@@ -195,15 +179,47 @@
       <option name="project" value="LOCAL" />
       <updated>1731495594079</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="chat &amp; games">
+      <option name="closed" value="true" />
+      <created>1732284024487</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732284024487</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Client init" />
     <MESSAGE value="Server init" />
-    <option name="LAST_COMMIT_MESSAGE" value="Server init" />
+    <MESSAGE value="chat &amp; games" />
+    <option name="LAST_COMMIT_MESSAGE" value="chat &amp; games" />
   </component>
 </project>
