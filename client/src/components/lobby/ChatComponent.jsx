@@ -12,7 +12,7 @@ const ChatComponent = () => {
   const chatDiv = ({player, children}) => {
     const {id, color, name} = player;
     return (
-      <div id={id} style={{color}} className="flex py-2 px-4 bg-white rounded gap-1 max-w-3xl">
+      <div id={id} style={{color}} className="flex py-2 px-4 bg-white rounded gap-0.5 max-w-3xl">
         <span className="font-bold">{name}</span>
         {children}
       </div>
@@ -25,7 +25,7 @@ const ChatComponent = () => {
       case 'chat':
         return chatDiv({
           player,
-          children: <>:<span>{msg.text}</span></>
+          children: <>: <span>{msg.text}</span></>
         });
       case 'join':
         return chatDiv({
@@ -49,9 +49,9 @@ const ChatComponent = () => {
   }, [chatHistory]);
 
   return (
-    <div className="max-h-screen h-screen flex flex-col gap-5 p-8 bg-white bg-opacity-20 backdrop-blur-lg justify-end overflow-y-clip px-5">
-      <div className="flex flex-shrink-0 flex-col gap-5 overflow-y-auto max-h-fit basis-4/5">
-        {chatHistory.filter(({type}) => type !== 'move').map((msg, index) => <div key={index} className={"asd"}>{showChat(msg, index)}</div>)}
+    <div className="h-screen flex flex-col justify-end gap-5 p-8 bg-white bg-opacity-20 backdrop-blur-lg overflow-y-clip px-5 basis-3/12">
+      <div className="flex flex-shrink-0 flex-col gap-5 overflow-y-auto max-h-fit flex-1">
+        {chatHistory.map((msg, index) => <div key={index}>{showChat(msg, index)}</div>)}
       </div>
       <div className="flex">
         <ChatInputComponent player={player} webSocket={webSocket}/>
