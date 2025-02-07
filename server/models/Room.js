@@ -3,125 +3,127 @@
 /** Chat rooms that can be joined/left/broadcast to. */
 
 import Game from './Game.js';
+import VoteManager from "../utils/VoteManager.js";
 // in-memory storage of roomNames -> room
-
+const AVAILABLE_GAMES = [
+    {
+        name: 'SuperTicTacTo',
+        key: 'sttt'
+    },
+    {
+        name: 'Connect Four',
+        key: 'c4'
+    }
+]
 export const rooms = new Map();
 
-/** Room is a collection of listening members; this becomes a "chat room"
- *   where individual users can join/leave/broadcast to.
- */
-
 class Room {
-  /** Get room by that name, creating if nonexistent.
-   * <p>
-   * This uses a programming pattern often called a "registry" ---
-   * users of this class only need to .get to find a room; they don't
-   * need to know about the `rooms` variable that holds the rooms. To
-   * them, the Room class manages all of this stuff for them.
-   *
-   * @param roomName {string} room to get
-   **/
+    static get(roomName) {
+        if (!rooms.has(roomName)) {
+            rooms.set(roomName, new Room(roomName));
+            console.log(`created '${roomName}' chatroom`);
+        }
 
-  static get(roomName) {
-    if (!rooms.has(roomName)) {
-      rooms.set(roomName, new Room(roomName));
-      console.log(`created '${roomName}' chatroom`);
+        return rooms.get(roomName);
     }
 
-    return rooms.get(roomName);
-  }
-
-  /** Make a new room, starting with empty set of listeners.
-   *
-   * @param roomName {string} room name for new room
-   * */
-
-  constructor(roomName) {
-    this.name = roomName;
-    this.members = new Set();
-    this.game = null;
-  }
-
-  /** Handle member joining a room.
-   *
-   * @param member {Player} joining member
-   * */
-
-  join(member) {
-    console.log(`${member.name} joined '${this.name}' chat`);
-    this.members.add(member);
-
-    this.broadcast({
-      type: "join",
-      player: {name: member.name, color: member.color, id: member.id},
-    });
-
-    if (this.members.size === 2 && !this.game) {
-      this.initGame();
+    constructor(roomName) {
+        this.name = roomName;
+        this.members = new Set();
+        this.game = null;
+        this.voteManager = new VoteManager(this.members);
+        console.log(this);
     }
-  }
 
-  initGame = () => {
-    this.game = new Game(this.members);
+    /** Handle member joining a room.
+     *
+     * @param member {Player} joining member
+     * */
 
-    const {state, gameId, activePlayer, players} = this.game;
+    join(member) {
+        console.log(`${member.name} joined '${this.name}' chat`);
+        this.members.add(member);
 
-    this.broadcast({
-      type: 'game_created',
-      text: `Game ${gameId} has been created`,
-      game: {
-        state,
-        activePlayer,
-        playersInRoom: this.game.playersInRoom
-      },
-    });
-  }
+        this.broadcast({
+            type: "join",
+            data: {
+                player: {name: member.name, color: member.color, id: member.id}
+            },
+        });
 
-
-  /** Handle member leaving a room.
-   *
-   * @param member {Player} leaving member
-   * */
-
-  leave(member) {
-    this.members.delete(member);
-    delete this.game;
-    this.game = null;
-  }
-
-  /** Send message to all members in a room.
-   *
-   * @param data {string} message to send
-   * */
-
-  broadcast(data) {
-    this.members.forEach((member) => member.send(
-        JSON.stringify(
-          {
-            ...data,
-            timestamp: new Date().toLocaleTimeString()
-          }
-        )
-      )
-    );
-  }
-
-  /** Return a Set containing all room members */
-
-  getMembers() {
-    return this.members;
-  }
-
-  /** Get a room member: returns member or undefined if not found.
-   *
-   * @param name {string} name of member to get
-   * */
-
-  getMember(name) {
-    for (let member of this.members) {
-      if (member.name === name) return member;
+        if (this.members.size === 1 && !this.game) {
+            this.chooseGameScreen();
+        }
     }
-  }
+
+    initGame = () => {
+        this.game = new Game(this.members);
+
+        const {state, gameId, activePlayer, players} = this.game;
+
+        this.broadcast({
+            type: 'game_created',
+            data: {
+                text: `Game ${gameId} has been created`,
+                game: {
+                    state,
+                    activePlayer,
+                    playersInRoom: this.game.playersInRoom
+                },
+            }
+        });
+    }
+
+    chooseGameScreen = () => {
+        this.broadcast({
+            type: "available_games",
+            data: {
+                games: AVAILABLE_GAMES,
+            }
+        });
+    }
+
+
+    /** Handle member leaving a room.
+     *
+     * @param member {Player} leaving member
+     * */
+
+    leave(member) {
+        this.members.delete(member);
+        delete this.game;
+        this.game = null;
+    }
+
+    /** Send message to all members in a room.
+     *
+     * @param data {Object} message to send
+     * */
+
+    broadcast(data) {
+        data.timestamp = new Date().toLocaleTimeString()
+        this.members.forEach((member) => member.send(
+                JSON.stringify(data)
+            )
+        );
+    }
+
+    /** Return a Set containing all room members */
+
+    getMembers() {
+        return this.members;
+    }
+
+    /** Get a room member: returns member or undefined if not found.
+     *
+     * @param name {string} name of member to get
+     * */
+
+    getMember(name) {
+        for (let member of this.members) {
+            if (member.name === name) return member;
+        }
+    }
 }
 
 export default Room;

@@ -1,0 +1,30 @@
+### Request with client messages
+// It is possible to specify client messages in request body. Use '===' to separate messages.
+// Add '=== wait-for-server' above a message to send it after a server response is received.
+// To wait for N responses, add '=== wait-for-server' N times.
+WEBSOCKET ws://localhost:3001/game/bilkoo
+Content-Type: application/json // We use it for highlighting
+
+{
+  "player": {
+    "name": "erwer",
+    "color": "rgb(59 130 246)",
+    "id": null
+  },
+  "type": "join"
+}
+=== wait-for-server
+#### asd
+WEBSOCKET ws://localhost:3001/game/bilkoo
+Content-Type: application/json // We use it for highlighting
+
+{
+  "player": {
+    "name": "dsadasd",
+    "color": "rgb(59 130 246)",
+    "id": "m6urqiwk6asblgeet79"
+  },
+  "type": "chat",
+  "text": "21312312"
+}
+===

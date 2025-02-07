@@ -1,9 +1,8 @@
-import {createContext, useReducer, useState} from "react";
+import {createContext, useReducer} from "react";
 
 export const PlayerContext = createContext(null);
 export const PlayerProvider = ({children}) => {
   const reducer = (state, {name, value}) => {
-      console.log(name, value);
       return {
           ...state,
           [name]: value

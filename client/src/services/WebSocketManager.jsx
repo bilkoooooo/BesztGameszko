@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {PlayerContext} from "@/services/PlayerProvider";
-import {ChatHistoryContext} from "@/services/ChatHistoryProvider";
+import {WebsocketHistoryContext} from "@/services/WebsocketHistoryProvider";
 import {WebsocketContext} from "@/services/WebsocketProvider";
+import {useSendWebsocketMessage} from "@/services/SendWebsocketMessage";
 
 const WebSocketManagerComponent = ({setIsJoined}) => {
-    // const [socketUrl, setSocketUrl] = useState(`ws://192.168.51.223:3000/game/bilkoo`);
-    const [socketUrl, setSocketUrl] = useState('ws://localhost:3000/game/bilkoo');
+    const [socketUrl, setSocketUrl] = useState('ws://localhost:3001/game/bilkoo');
     const [connectionStatus, setConnectionStatus] = useState('Connecting');
     const {player, dispatch} = useContext(PlayerContext);
-    const {chatHistory, setChatHistory} = useContext(ChatHistoryContext);
+    const {websocketHistory: {join}, setWebsocketHistory} = useContext(WebsocketHistoryContext);
     const {setWebSocket} = useContext(WebsocketContext);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
 
         ws.onopen = () => {
             setConnectionStatus('Open');
-            ws.send(JSON.stringify({player, type: 'join'}));
+            useSendWebsocketMessage(ws, {player, type: 'join'})
         };
 
         ws.onclose = () => {
@@ -24,18 +24,18 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
             setConnectionStatus('Closed')
         };
 
-        ws.onmessage = (event) => setChatHistory((prevHistory) => [...prevHistory, JSON.parse(event.data)]);
+        ws.onmessage = (event) => setWebsocketHistory(JSON.parse(event.data));
 
         setWebSocket(ws);
     }, []);
 
 
     useEffect(() => {
-        chatHistory.length && !player.id && dispatch({
+        !!join.length && !player.id && dispatch({
             name: 'id',
-            value: chatHistory.findLast((msg) => msg.type === 'join')?.player.id
+            value: join.at(-1).player.id
         })
-    }, [chatHistory]);
+    }, [join]);
 
     useEffect(() => {
         console.log(connectionStatus);

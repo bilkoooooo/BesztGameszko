@@ -1,23 +1,20 @@
 import {useContext, useEffect, useState} from "react";
 import {GameContext} from "@/services/GameProvider";
 import '@styles/superTicTacToe.css';
-import {WebsocketContext} from "@/services/WebsocketProvider";
 import {PlayerContext} from "@/services/PlayerProvider";
+import {useSendWebsocketMessage} from "@/services/SendWebsocketMessage";
 
-const GameBoardComponent = () => {
+const SuperTicTacToeComponent = () => {
     const {player} = useContext(PlayerContext);
     const {game} = useContext(GameContext);
     const {state, winner, gameId, activePlayer, playersInRoom} = game || {};
 
     const [activePlayerObj, setActivePlayer] = useState({});
 
-    console.log(activePlayerObj);
-
     useEffect(() => {
         setActivePlayer(playersInRoom.find((player) => player.id === activePlayer));
     }, [game])
 
-    const {webSocket} = useContext(WebsocketContext);
     const handleClick = ({target}) => {
         if (activePlayer !== player.id) {
             alert('wait your turn');
@@ -25,12 +22,12 @@ const GameBoardComponent = () => {
         }
 
         if (target.matches('.cell') && !target.dataset.symbol) {
-            webSocket?.send(JSON.stringify({
+            useSendWebsocketMessage({
                     playerId: player.id,
                     type: 'move',
                     cell: target.id
                 }
-            ));
+            );
         }
     }
 
@@ -83,4 +80,4 @@ const GameBoardComponent = () => {
     )
 }
 
-export default GameBoardComponent;
+export default SuperTicTacToeComponent;

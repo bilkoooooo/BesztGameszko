@@ -2,4 +2,8 @@
 
 import app from "./controllers/server.js";
 
-app.listen(3000, () => console.log("Started http://localhost:3000/"));
+const [, , portArg, hostArg] = process.argv;
+const port = parseInt(portArg.split('=')[1], 10) ?? 3001;
+const host = hostArg.split('=')[1] ?? 'localhost';
+
+app.listen(port, () => console.log(`Started https://${host}:${port}`));

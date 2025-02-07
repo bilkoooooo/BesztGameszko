@@ -1,4 +1,4 @@
-import GameBoardComponent from "@components/game/GameBoardComponent";
+import SuperTicTacToeComponent from "@components/game/SuperTicTacToeComponent";
 import {useContext} from "react";
 import {GameContext} from "@/services/GameProvider";
 
@@ -7,8 +7,9 @@ const GameComponent = () => {
 
   return (
     <div className="flex w-full h-full justify-center items-center relative">
-      {!game && <div className="loader"/>}
-      {game && <GameBoardComponent/>}
+
+      {/*{!game && <div className="loader"/>}*/}
+      {game && <SuperTicTacToeComponent/>}
     </div>
   )
 }
