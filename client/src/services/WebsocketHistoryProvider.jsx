@@ -1,12 +1,18 @@
 import {createContext, useReducer} from "react";
 
-export const WebsocketHistoryContext = createContext(null);
+export const  WebsocketHistoryContext = createContext({});
 export const WebsocketHistoryProvider = ({children}) => {
     const reducer = (state, eventData) => {
         const {type, data, timestamp} = eventData;
         if (!state[type]) {
             state[type] = [];
         }
+
+        if (type === 'join') {
+            state.members = {...state.members, [data.player.id]: data.player};
+        }
+
+        console.log(eventData);
 
         return {
             ...state,

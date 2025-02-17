@@ -9,7 +9,7 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
     const [connectionStatus, setConnectionStatus] = useState('Connecting');
     const {player, dispatch} = useContext(PlayerContext);
     const {websocketHistory: {join}, setWebsocketHistory} = useContext(WebsocketHistoryContext);
-    const {setWebSocket} = useContext(WebsocketContext);
+    const {webSocket,setWebSocket} = useContext(WebsocketContext);
 
     useEffect(() => {
         const ws = new WebSocket(socketUrl);
@@ -40,6 +40,7 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
     useEffect(() => {
         console.log(connectionStatus);
 
+        console.log(webSocket);
         if (connectionStatus === 'Closed') {
             // location.reload();
             setIsJoined(false);

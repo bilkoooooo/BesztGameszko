@@ -55,8 +55,10 @@ class Player {
     handleChat = (text) => {
         this.room.broadcast({
             type: "chat",
-            player: {name: this.name, color: this.color, id: this.id},
-            text: text,
+            data: {
+                player: {name: this.name, color: this.color, id: this.id},
+                text: text
+            },
         });
     }
 
@@ -123,9 +125,8 @@ class Player {
 
         this.send(JSON.stringify(
             {
-                name: "In room",
-                type: "chat",
-                text: memberNames.join(", "),
+                type: "members",
+                members: memberNames
             }));
     }
 

@@ -27,6 +27,18 @@ $palette: (
   );
 }
 
+@media screen and (max-width: 660px) {
+  #app {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .cell {
+    min-width: 4rem;
+    min-height: 4rem;
+  }
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 40px;
@@ -62,4 +74,12 @@ $palette: (
     inset: 0;
     transform: rotate(90deg)
   }
+}
+
+*::-webkit-scrollbar {
+  width: 1px;
+}
+
+* {
+  scrollbar-width: none;
 }
