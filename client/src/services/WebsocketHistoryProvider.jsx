@@ -1,6 +1,6 @@
 import {createContext, useReducer} from "react";
 
-export const  WebsocketHistoryContext = createContext({});
+export const WebsocketHistoryContext = createContext({});
 export const WebsocketHistoryProvider = ({children}) => {
     const reducer = (state, eventData) => {
         const {type, data, timestamp} = eventData;
@@ -12,7 +12,12 @@ export const WebsocketHistoryProvider = ({children}) => {
             state.members = {...state.members, [data.player.id]: data.player};
         }
 
-        console.log(eventData);
+        if (['game_created', 'move'].includes(type)) {
+            return {
+                ...state,
+                game: {...state.game, ...data.game}
+            }
+        }
 
         return {
             ...state,
@@ -20,7 +25,7 @@ export const WebsocketHistoryProvider = ({children}) => {
         }
     }
 
-    const [websocketHistory, dispatch] = useReducer(reducer, {chat: [], join: []});
+    const [websocketHistory, dispatch] = useReducer(reducer, {chat: [], join: [], game: {inited: false}});
 
     return (
         <WebsocketHistoryContext.Provider value={{websocketHistory, setWebsocketHistory: dispatch}}>

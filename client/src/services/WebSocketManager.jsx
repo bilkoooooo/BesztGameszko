@@ -40,7 +40,6 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
     useEffect(() => {
         console.log(connectionStatus);
 
-        console.log(webSocket);
         if (connectionStatus === 'Closed') {
             // location.reload();
             setIsJoined(false);

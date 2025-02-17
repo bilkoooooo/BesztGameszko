@@ -83,10 +83,12 @@ class Player {
                 this.room.game.onMove(msg);
                 this.room.broadcast({
                     type: "move",
-                    game: {
-                        activePlayer: this.room.game.activePlayer,
-                        state: this.room.game.state,
-                        winner: this.room.game.winner
+                    data: {
+                        game: {
+                            activePlayer: this.room.game.activePlayer,
+                            state: this.room.game.state,
+                            winner: this.room.game.winner
+                        }
                     }
                 });
                 break;

@@ -5,40 +5,21 @@ export const GameContext = createContext(null);
 export const GameProvider = ({children}) => {
     const {websocketHistory} = useContext(WebsocketHistoryContext);
 
-    const gameStateReducer = (state, {type, value}) => {
-        if (type === 'init') {
-            return {...value}
-        }
-
-        if (type === 'move') {
-            return {
-                ...state,
-                state: value.state,
-                activePlayer: value.activePlayer,
-                winner: value.winner
-            }
+    const gameStateReducer = (state, {value}) => {
+        return {
+            ...state, ...value
         }
     }
 
-    const [game, setGameState] = useReducer(gameStateReducer, null);
-
-    const findLastByType = (TYPE) => websocketHistory[TYPE];
-
     useEffect(() => {
-        findLastByType('game_created') && setGameState(
-            {
-                type: 'init',
-                value: findLastByType('game_created').game
-            }
-        );
+        const {game: gameWs} = websocketHistory;
 
-        findLastByType('move') && setGameState(
-            {
-                type: 'move',
-                value: findLastByType('move').game
-            }
-        );
-    }, websocketHistory['game_created'] || websocketHistory['move']);
+        if (gameWs.inited) {
+            setGameState({value: gameWs});
+        }
+    }, [websocketHistory]);
+
+    const [game, setGameState] = useReducer(gameStateReducer, null);
 
     return (
         <GameContext.Provider value={{game, setGameState}}>

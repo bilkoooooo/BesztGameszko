@@ -38,7 +38,5 @@ export default class SuperTicTacToe extends Game {
             this.winner = 'draw';
         }
         this.setActivePlayer();
-        console.log(this.getPlayerById(this.activePlayer));
     }
-
 }

@@ -4,6 +4,7 @@
 
 import Game from './Game.js';
 import VoteManager from "../utils/VoteManager.js";
+import SuperTicTacToe from "./games/SuperTicTacToe.js";
 // in-memory storage of roomNames -> room
 const AVAILABLE_GAMES = [
     {
@@ -32,7 +33,6 @@ class Room {
         this.members = new Set();
         this.game = null;
         this.voteManager = new VoteManager(this.members);
-        console.log(this);
     }
 
     /** Handle member joining a room.
@@ -51,24 +51,26 @@ class Room {
             },
         });
 
-        if (this.members.size === 1 && !this.game) {
-            this.chooseGameScreen();
+        if (this.members.size === 2 && !this.game) {
+            false && this.chooseGameScreen();
+            this.game = new SuperTicTacToe(this.members);
+            this.initGame();
         }
     }
 
     initGame = () => {
-        this.game = new Game(this.members);
+        // this.game = new Game(this.members);
 
         const {state, gameId, activePlayer, players} = this.game;
 
         this.broadcast({
             type: 'game_created',
             data: {
-                text: `Game ${gameId} has been created`,
                 game: {
                     state,
                     activePlayer,
-                    playersInRoom: this.game.playersInRoom
+                    playersInRoom: this.game.playersInRoom,
+                    inited: true
                 },
             }
         });

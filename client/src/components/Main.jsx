@@ -11,8 +11,6 @@ import GameComponent from "@components/game/GameComponent";
 const Main = () => {
     const [isJoined, setIsJoined] = useState(false);
     const {webSocket} = useContext(WebsocketContext) || {};
-
-    console.log(webSocket);
     return (
         <>
             <PlayerProvider>

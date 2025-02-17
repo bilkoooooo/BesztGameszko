@@ -11,9 +11,9 @@ const GameComponent = () => {
     return (
         <div className="flex w-full h-full justify-center items-center relative">
 
-            {!game && webSocket && <GameSelectScreen/>}
-            {/*{!game && <div className="loader"/>}*/}
-            {/*{game && <SuperTicTacToeComponent/>}*/}
+            {/*{!game && webSocket && <GameSelectScreen/>}*/}
+            {!game && <div className="loader"/>}
+            {game && <SuperTicTacToeComponent/>}
         </div>
     )
 }

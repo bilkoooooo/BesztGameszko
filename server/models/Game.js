@@ -29,8 +29,7 @@ class Game {
 
     getPlayerById = (id) => this.players.find((player) => player.id === id)
 
-    setState = () => {
-    }
+    setState = () => {}
 
     setActivePlayer = () => this.activePlayer = this.players.find((player) => player.id !== this.activePlayer).id
 

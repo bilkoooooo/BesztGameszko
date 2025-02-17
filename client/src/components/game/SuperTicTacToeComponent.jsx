@@ -3,11 +3,13 @@ import {GameContext} from "@/services/GameProvider";
 import '@styles/superTicTacToe.css';
 import {PlayerContext} from "@/services/PlayerProvider";
 import {useSendWebsocketMessage} from "@/services/SendWebsocketMessage";
+import {WebsocketContext} from "@/services/WebsocketProvider";
 
 const SuperTicTacToeComponent = () => {
     const {player} = useContext(PlayerContext);
     const {game} = useContext(GameContext);
-    const {state, winner, gameId, activePlayer, playersInRoom} = game || {};
+    const {state = [], winner, gameId, activePlayer, playersInRoom} = game || {};
+    const {webSocket} = useContext(WebsocketContext);
 
     const [activePlayerObj, setActivePlayer] = useState({});
 
@@ -22,7 +24,7 @@ const SuperTicTacToeComponent = () => {
         }
 
         if (target.matches('.cell') && !target.dataset.symbol) {
-            useSendWebsocketMessage({
+            useSendWebsocketMessage(webSocket, {
                     playerId: player.id,
                     type: 'move',
                     cell: target.id
@@ -55,7 +57,7 @@ const SuperTicTacToeComponent = () => {
 
     const winScreen = (text) => <div
         className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-70 backdrop-blur">
-        <div className="absolute animate-spin ani top-1/2 left-1/2 bg-white text-black text-4xl font-bold p-4 rounded">
+        <div className="absolute animate-pulse top-1/2 left-1/2 bg-white text-black text-4xl font-bold p-4 rounded">
             {text}
         </div>
     </div>;
