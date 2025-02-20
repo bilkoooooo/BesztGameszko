@@ -1,2 +1,1 @@
-# SuperTicTacToe
 Legjobb gamesz valaha
