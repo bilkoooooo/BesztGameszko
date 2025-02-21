@@ -12,7 +12,7 @@ export const PlayerProvider = ({children}) => {
   const playerObj = localStorage.getItem('player') ?
     JSON.parse(localStorage.getItem('player')) :
     {
-      name: '',
+      name: 'Teszt Elek_' + Math.floor(Math.random() * 1000),
       color: null,
       id: null
     };

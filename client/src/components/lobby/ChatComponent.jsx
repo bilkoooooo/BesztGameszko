@@ -42,13 +42,9 @@ const ChatComponent = () => {
         }
     }
 
-    useEffect(() => {
-        // console.log(chat);
-    }, [join]);
-
     return (
         <div
-            className="h-screen flex flex-col justify-end gap-5 p-8 bg-white bg-opacity-20 backdrop-blur-lg overflow-y-clip px-5 basis-3/12">
+            className="h-screen z-40 flex flex-col justify-end gap-5 p-8 bg-white bg-opacity-20 backdrop-blur-lg overflow-y-clip px-5 basis-4/12">
             <div className="flex flex-shrink-0 flex-col gap-5 overflow-y-auto max-h-fit flex-1">
                 {chat.map((data, index) => <div key={index}>{showChat('chat', data)}</div>)}
 

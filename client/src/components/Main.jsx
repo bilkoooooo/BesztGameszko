@@ -7,29 +7,33 @@ import {WebsocketHistoryProvider} from "@/services/WebsocketHistoryProvider";
 import {WebsocketContext, WebsocketProvider} from "@/services/WebsocketProvider";
 import {GameProvider} from "@/services/GameProvider";
 import GameComponent from "@components/game/GameComponent";
+import {PlayerIcon} from "@components/player/PlayerIcon";
 
 const Main = () => {
     const [isJoined, setIsJoined] = useState(false);
-    const {webSocket} = useContext(WebsocketContext) || {};
     return (
-        <>
+        <div className={"h-screen w-screen relative flex justify-items-start items-end  bg-gradient-to-b from-blue-400 to-blue-900"}>
             <PlayerProvider>
                 {!isJoined &&
                     <JoinModalComponent setIsJoined={setIsJoined}/>
                 }
                 {isJoined &&
-                    <WebsocketProvider>
-                        <WebsocketHistoryProvider>
-                            <WebSocketManager setIsJoined={setIsJoined}/>
-                            <Chat/>
-                            <GameProvider>
-                                <GameComponent/>
-                            </GameProvider>
-                        </WebsocketHistoryProvider>
-                    </WebsocketProvider>
+                    <>
+                        <PlayerIcon/>
+                        <WebsocketProvider>
+                            <WebsocketHistoryProvider>
+                                <WebSocketManager setIsJoined={setIsJoined}/>
+                                <Chat/>
+                                <GameProvider>
+                                    <GameComponent/>
+                                </GameProvider>
+                            </WebsocketHistoryProvider>
+                        </WebsocketProvider>
+                    </>
+
                 }
             </PlayerProvider>
-        </>
+        </div>
     )
 }
 

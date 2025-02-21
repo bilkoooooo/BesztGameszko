@@ -6,10 +6,11 @@ import {useSendWebsocketMessage} from "@/services/SendWebsocketMessage";
 
 const WebSocketManagerComponent = ({setIsJoined}) => {
     const [socketUrl, setSocketUrl] = useState('ws://localhost:3001/game/bilkoo');
+    // const [socketUrl, setSocketUrl] = useState('ws://192.168.51.223:3001/game/bilkoo');
     const [connectionStatus, setConnectionStatus] = useState('Connecting');
     const {player, dispatch} = useContext(PlayerContext);
     const {websocketHistory: {join}, setWebsocketHistory} = useContext(WebsocketHistoryContext);
-    const {webSocket,setWebSocket} = useContext(WebsocketContext);
+    const {webSocket, setWebSocket} = useContext(WebsocketContext);
 
     useEffect(() => {
         const ws = new WebSocket(socketUrl);
@@ -31,10 +32,12 @@ const WebSocketManagerComponent = ({setIsJoined}) => {
 
 
     useEffect(() => {
-        !!join.length && !player.id && dispatch({
-            name: 'id',
-            value: join.at(-1).player.id
-        })
+        if (join.length) {
+            !player.id && dispatch({
+                name: 'id',
+                value: join.at(-1).player.id
+            })
+        }
     }, [join]);
 
     useEffect(() => {

@@ -1,14 +1,11 @@
 "use strict";
 
-import Game from "./Game.js";
-
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+const uid = () => Math.floor(Math.random() * 100) + Date.now().toString(36) + Math.random().toString(36).slice(2);
 
 /** Functionality related to chatting. */
 
 // Room is an abstraction of a chat channel
 import Room from "./Room.js";
-import {json} from "express";
 
 /** ChatUser is a individual connection from client -> server to chat. */
 
@@ -23,19 +20,15 @@ class Player {
         this._send = send;
         this.room = Room.get(roomName);
         this.name = null;
-        this.color = null;
+        this.color = "#000";
         this.id = null;
-        console.log(this);
     }
 
     /** Send msgs to this client using underlying connection-send-function **/
 
-    send(data) {
-        this._send(data);
-    }
+    send = (data) => this._send(data)
 
     /**
-     *
      * @param name {string}
      * @param color {string}
      */
@@ -43,7 +36,7 @@ class Player {
         this.name = name;
         this.color = color;
         this.id = uid();
-        this.symbol = !this.room.members.size ? 'x' : 'o';
+        this.symbol = this.room.members.size < 1 ? 'x' : 'o';
         this.room.join(this);
     }
 
@@ -56,7 +49,11 @@ class Player {
         this.room.broadcast({
             type: "chat",
             data: {
-                player: {name: this.name, color: this.color, id: this.id},
+                player: {
+                    name: this.name,
+                    color: this.color,
+                    id: this.id
+                },
                 text: text
             },
         });
@@ -92,7 +89,7 @@ class Player {
                     }
                 });
                 break;
-            case 'choose-game':
+            case 'vote':
                 this.room.voteManager.addVote(msg.player.id, msg.game);
                 break;
 
@@ -107,7 +104,9 @@ class Player {
         this.room.leave(this);
         this.room.broadcast({
             type: "left",
-            text: `${this.name} left ${this.room.name}.`,
+            data: {
+                members: this.room.getMembersObj(),
+            }
         });
     }
 

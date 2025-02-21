@@ -1,12 +1,24 @@
 class VoteManager {
-    constructor(players) {
+    constructor(room) {
+        this.room = room;
         this.votes = new Map();
-        console.log(players);
-        this.players = [] ?? players;
     }
 
     addVote(playerId, game) {
         this.votes.set(playerId, game);
+
+        this.room.broadcast({
+            type: "vote",
+            data: {
+                votes: this.getVoteCounts(),
+                votesCount: Number(this.votes.size)
+            }
+        });
+
+        if (this.votes.size === this.room.members.size) {
+            this.room.initGame(this.determineWinningGame());
+            this.reset();
+        }
     }
 
     getVoteCounts() {

@@ -14,7 +14,7 @@ export const GameProvider = ({children}) => {
     useEffect(() => {
         const {game: gameWs} = websocketHistory;
 
-        if (gameWs.inited) {
+        if (gameWs?.inited) {
             setGameState({value: gameWs});
         }
     }, [websocketHistory]);

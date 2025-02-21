@@ -17,13 +17,11 @@ const options = {
 express_ws(app);
 
 app.ws("/game/:roomName", (ws, req, next) => {
-    console.log(`New connection to ${req.params.roomName}`);
+    // console.log(`New connection to ${req.params.roomName}`);
     const user = new Player(
         (data) => ws.send(data),
         req.params.roomName
     );
-
-    console.log(user);
 
     ws.on('message', (data) => {
         user.handleMessage(data);

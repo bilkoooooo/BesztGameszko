@@ -1,35 +1,61 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {WebsocketHistoryContext} from "@/services/WebsocketHistoryProvider";
 import {WebsocketContext} from "@/services/WebsocketProvider";
 import {useSendWebsocketMessage} from "@/services/SendWebsocketMessage";
 import {PlayerContext} from "@/services/PlayerProvider";
+import {cn} from "@/lib/utils";
 
 const GameSelectScreen = () => {
     const {websocketHistory} = useContext(WebsocketHistoryContext);
     const {webSocket} = useContext(WebsocketContext);
     const {player} = useContext(PlayerContext);
 
-    const {games = []} = websocketHistory?.available_games?.at(0) || {};
+    const {available_games: games} = websocketHistory;
 
-    console.log(games);
+    const [voted, setVoted] = useState(null);
 
-    const GamesDiv = (game) => {
+    const GamesDiv = () => {
         return (
-            <h1>{game.name}</h1>
-        )
+            games.map(({key, name}) => (<div onClick={() => handleClickedGame(key)}
+                                             className={cn(
+                                                 "p-4 w-full border border-white cursor-pointer font-bold select",
+                                                 voted === key && "voted")}
+                                             key={key}>
+                    <h1>{name}</h1>
+                </div>)
+            ))
     }
 
     const handleClickedGame = (gameKey) => {
+        if (voted) {
+            return;
+        }
+
         const selectedGame = games.find(game => game.key === gameKey);
 
+        setVoted(gameKey);
         useSendWebsocketMessage(webSocket, {player, type: 'vote', game: gameKey});
     }
 
     return games ? (
-        <div className={"flex flex-col gap-5 items-center justify-center"}>
-            {games.map((game, index) => <div onClick={handleClickedGame}
-                                             className={"p-4 bg-gradient-to-b from-blue-500 to-blue-900 cursor-pointer"}
-                                             key={index}>{GamesDiv(game)}</div>)}
+        <div
+            id="game-select"
+            className={cn(
+                "p-8 bg-white bg-opacity-25 rounded-lg flex flex-col justify-around items-center h-1/2 w-1/2",
+                voted && "disabled",
+            )}>
+
+            <div className="animate-pulse text-3xl uppercase">
+                voting
+            </div>
+
+            <GamesDiv/>
+
+            {voted && <div className="text-2xl text-white flex">Waiting for other players
+                <div
+                    className="animate-bounce">.
+                </div>
+            </div>}
         </div>
     ) : null
 }

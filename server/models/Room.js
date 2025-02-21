@@ -2,20 +2,26 @@
 
 /** Chat rooms that can be joined/left/broadcast to. */
 
-import Game from './Game.js';
 import VoteManager from "../utils/VoteManager.js";
 import SuperTicTacToe from "./games/SuperTicTacToe.js";
-// in-memory storage of roomNames -> room
+import TicTacToe from "./games/TicTacToe.js";
+
 const AVAILABLE_GAMES = [
     {
-        name: 'SuperTicTacTo',
-        key: 'sttt'
+        name: 'TicTacToe',
+        key: 'ttt'
     },
-    {
-        name: 'Connect Four',
-        key: 'c4'
-    }
-]
+    // {
+    //     name: 'SuperTicTacTo',
+    //     key: 'sttt'
+    // },
+    // {
+    //     name: 'Connect Four',
+    //     key: 'c4'
+    // }
+];
+
+// in-memory storage of roomNames -> room
 export const rooms = new Map();
 
 class Room {
@@ -32,7 +38,7 @@ class Room {
         this.name = roomName;
         this.members = new Set();
         this.game = null;
-        this.voteManager = new VoteManager(this.members);
+        this.voteManager = new VoteManager(this);
     }
 
     /** Handle member joining a room.
@@ -40,37 +46,59 @@ class Room {
      * @param member {Player} joining member
      * */
 
-    join(member) {
-        console.log(`${member.name} joined '${this.name}' chat`);
+    join = (member) => {
+        console.log(`${member.name} #${member.id} joined '${this.name}' chat`);
         this.members.add(member);
 
         this.broadcast({
             type: "join",
             data: {
-                player: {name: member.name, color: member.color, id: member.id}
+                members: this.getMembersObj(),
+                player: {
+                    name: member.name,
+                    color: member.color,
+                    id: member.id,
+                    symbol: member.symbol
+                }
             },
         });
 
         if (this.members.size === 2 && !this.game) {
-            false && this.chooseGameScreen();
-            this.game = new SuperTicTacToe(this.members);
-            this.initGame();
+            if (AVAILABLE_GAMES.length > 1) {
+                this.chooseGameScreen();
+            } else {
+                this.initGame(AVAILABLE_GAMES[0].key);
+            }
+
         }
     }
 
-    initGame = () => {
-        // this.game = new Game(this.members);
+    initGame = (gameKey) => {
+        switch (gameKey) {
+            case 'ttt':
+                this.game = new TicTacToe(this);
+                break;
+            case 'sttt':
+                this.game = new SuperTicTacToe(this);
+                break;
+            case 'c4':
+                // this.game = new Game(this, SuperTicTacToe);
+                break;
+            default:
+                this.game = new TicTacToe(this);
+        }
 
-        const {state, gameId, activePlayer, players} = this.game;
+        const {state, gameId, activePlayer} = this.game;
 
         this.broadcast({
             type: 'game_created',
             data: {
                 game: {
+                    key: gameKey,
                     state,
                     activePlayer,
-                    playersInRoom: this.game.playersInRoom,
-                    inited: true
+                    inited: true,
+                    gameId
                 },
             }
         });
@@ -93,8 +121,8 @@ class Room {
 
     leave(member) {
         this.members.delete(member);
-        delete this.game;
-        this.game = null;
+        this.voteManager.reset();
+        this.game?.resetState?.();
     }
 
     /** Send message to all members in a room.
@@ -110,22 +138,7 @@ class Room {
         );
     }
 
-    /** Return a Set containing all room members */
-
-    getMembers() {
-        return this.members;
-    }
-
-    /** Get a room member: returns member or undefined if not found.
-     *
-     * @param name {string} name of member to get
-     * */
-
-    getMember(name) {
-        for (let member of this.members) {
-            if (member.name === name) return member;
-        }
-    }
+    getMembersObj = () => Array.from(this.members).map(({name, color, id, symbol}) => ({name, color, id, symbol}))
 }
 
 export default Room;

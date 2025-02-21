@@ -14,9 +14,10 @@ class Game {
         return games.get(_gameId);
     }
 
-    constructor(players) {
+    constructor(room) {
+        this.room = room;
         this.state = [['', '', ''], ['', '', ''], ['', '', '']];
-        this.players = [...players];
+        this.players = [...room.members];
         this.activePlayer = this.players[0].id;
         this.winner = null;
         this.gameId = this._gameId;
@@ -30,6 +31,10 @@ class Game {
     getPlayerById = (id) => this.players.find((player) => player.id === id)
 
     setState = () => {}
+
+    resetState = () => {
+        this.state = [['', '', ''], ['', '', ''], ['', '', '']];
+    }
 
     setActivePlayer = () => this.activePlayer = this.players.find((player) => player.id !== this.activePlayer).id
 
